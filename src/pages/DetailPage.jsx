@@ -67,7 +67,15 @@ export default function DetailPage() {
                     <Typography>Fecha: </Typography>
                     <Typography>{format(convertTimeStampToDate(userData.list[id].createdAt), 'dd/MM/yyyy')}</Typography>
                 </Stack>
-                <Button variant='contained'>Editar</Button>
+                <Stack direction='row' gap={1}>
+                    <Button variant='contained' color='secondary'>
+                        Cargar nuevo
+                    </Button>
+                    <Button variant='contained'>Editar</Button>
+                    <Button variant='outlined' color='warning'>
+                        Eliminar
+                    </Button>
+                </Stack>
             </Paper>
         )
     )
