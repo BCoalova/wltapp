@@ -9,7 +9,7 @@ export default function Home() {
     return (
         <Stack>
             {userData && !Object.keys(userData.list).length && <NoData />}
-            {userData && <List />}
+            {userData && !!Object.keys(userData.list).length && <List />}
         </Stack>
     )
 }

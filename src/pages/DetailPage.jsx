@@ -1,5 +1,6 @@
 import { LoadingButton } from '@mui/lab'
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import DetailsActions from '../components/DetailsActions'
 import DetailsGrid from '../components/DetailsGrid'
@@ -66,6 +67,8 @@ export default function DetailPage() {
     //     // eslint-disable-next-line no-undef
     //     console.log('userData => ', userData)
     // }, [userData])
+
+    // return 'hi'
 
     return (
         userData && (

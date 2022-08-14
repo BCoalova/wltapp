@@ -24,7 +24,7 @@ export default function Add() {
         e.preventDefault()
         setIsInDBErr('')
 
-        let excerciseCode = excercise.replace(' ', '').toUpperCase()
+        let excerciseCode = excercise.replaceAll(' ', '').toUpperCase()
 
         const isInDB = userData.list[excerciseCode]?.code === excerciseCode
         if (isInDB) {
@@ -46,7 +46,7 @@ export default function Add() {
 
         await saveExcercise(data, excerciseCode)
 
-        navigate(`/lista/${excerciseCode}`)
+        navigate(`/detalle/${excerciseCode}`)
     }
 
     return (
