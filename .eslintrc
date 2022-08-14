@@ -19,6 +19,12 @@
     "rules": {
         "react/prop-types": "off",
         "no-console": "off",
+        // "jsx-a11y/no-autofocus": [
+        //     1,
+        //     {
+        //         "ignoreNonDOM": true
+        //     }
+        // ],
         // "@typescript-eslint/no-explicit-any": "off",
         // "@typescript-eslint/no-non-null-assertion": "off",
         // "@typescript-eslint/no-unused-vars": [

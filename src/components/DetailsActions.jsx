@@ -1,6 +1,6 @@
 import { Alert, Button, Stack } from '@mui/material'
 
-export default function DetailsActions({ handleAddToHistory, isShowAddNew, handleShowEdit, isShowEdit }) {
+export default function DetailsActions({ handleAddToHistory, isShowAddNew, handleShowEdit, isShowEdit, handlePromptDelete }) {
     return (
         <Stack direction='row' alignItems='center' justifyContent='flex-end' gap={2} sx={{ py: 2, px: 3 }}>
             {(isShowAddNew || isShowEdit) && (
@@ -15,7 +15,7 @@ export default function DetailsActions({ handleAddToHistory, isShowAddNew, handl
             <Button disabled={isShowEdit || isShowAddNew} variant='contained' onClick={handleShowEdit}>
                 Editar
             </Button>
-            <Button disabled={isShowEdit || isShowAddNew} variant='outlined' color='warning'>
+            <Button disabled={isShowEdit || isShowAddNew} variant='outlined' color='warning' onClick={handlePromptDelete}>
                 Eliminar
             </Button>
         </Stack>

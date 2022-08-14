@@ -1,7 +1,7 @@
 import { LoadingButton } from '@mui/lab'
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material'
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import DeleteConfirmation from '../components/DeleteConfirmation'
 import DetailsActions from '../components/DetailsActions'
 import DetailsGrid from '../components/DetailsGrid'
 import RepsAndWeight from '../components/RepsAndWeight'
@@ -22,6 +22,7 @@ export default function DetailPage() {
 
     const [isShowAddNew, hideAddNew, showAddNew] = useBoolean(false)
     const [isShowEdit, hideEdit, showEdit] = useBoolean(false)
+    const [isPromptDelete, hidePromptDelete, showPromptDelete] = useBoolean(false)
 
     const handleAddNew = async () => {
         const data = { ...userData.list[id] }
@@ -62,6 +63,15 @@ export default function DetailPage() {
         hideEdit()
     }
 
+    const handlePromptDelete = () => {
+        showPromptDelete()
+    }
+
+    const handleDelete = async id => {
+        // eslint-disable-next-line no-undef
+        console.log('id => ', id)
+    }
+
     // useEffect(() => {
     //     if (!userData) return
     //     // eslint-disable-next-line no-undef
@@ -92,6 +102,7 @@ export default function DetailPage() {
                         isShowAddNew={isShowAddNew}
                         handleShowEdit={handleShowEdit}
                         isShowEdit={isShowEdit}
+                        handlePromptDelete={handlePromptDelete}
                     />
                 </Paper>
                 {(isShowAddNew || isShowEdit) && (
@@ -128,6 +139,14 @@ export default function DetailPage() {
                             </Stack>
                         </Stack>
                     </Paper>
+                )}
+                {isPromptDelete && (
+                    <DeleteConfirmation
+                        isPromptDelete={isPromptDelete}
+                        hidePromptDelete={hidePromptDelete}
+                        id={id}
+                        handleDelete={handleDelete}
+                    />
                 )}
             </Stack>
         )
