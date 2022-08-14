@@ -9,6 +9,8 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
+import kettlebell from '../assets/weightlift.svg'
+import { Box } from '@mui/material'
 
 export default function Login() {
     let navigate = useNavigate()
@@ -61,6 +63,7 @@ export default function Login() {
                     <Typography textAlign='center' variant='h1' fontWeight={900}>
                         Weight lifting Tracker
                     </Typography>
+                    <Box width={80} component='img' src={kettlebell} />
                 </Stack>
                 <Stack
                     flex='35vh'
