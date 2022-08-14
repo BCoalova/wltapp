@@ -1,9 +1,8 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { AppBar, Box, IconButton, Stack, styled, Tab, Tabs, Toolbar, Typography, useMediaQuery } from '@mui/material'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { useGlobalContext } from '../context/GlobalContext'
 import { links } from '../constants/links'
-import { useEffect } from 'react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useGlobalContext } from '../context/GlobalContext'
 
 const StyledTab = styled(Tab)({
     indicator: {
@@ -16,20 +15,6 @@ export default function BottomNavigation() {
     const { pathname } = useLocation()
     const navigate = useNavigate()
     const matches = useMediaQuery('(min-width:700px)')
-
-    useEffect(() => {
-        // eslint-disable-next-line no-undef
-        console.log('pathname => ', pathname)
-
-        let pathArr = pathname.split('/').slice(-1)[0]
-        // eslint-disable-next-line no-undef
-        console.log('pathArr => ', pathArr)
-
-        const isInList = links.find(link => link.path === pathname)
-
-        // eslint-disable-next-line no-undef
-        console.log('isInList => ', isInList)
-    }, [pathname])
 
     return (
         <AppBar position='fixed' color='text' sx={{ top: 'auto', bottom: 0 }}>

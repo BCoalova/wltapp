@@ -1,82 +1,132 @@
-import styled from '@emotion/styled'
-import { Badge, Box, Button, Chip, Divider, Paper, Stack, Typography } from '@mui/material'
-import { format } from 'date-fns'
+import { LoadingButton } from '@mui/lab'
+import { Button, Divider, Paper, Stack, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
+import DetailsActions from '../components/DetailsActions'
+import DetailsGrid from '../components/DetailsGrid'
+import RepsAndWeight from '../components/RepsAndWeight'
+import Series from '../components/Series'
 import { useGlobalContext } from '../context/GlobalContext'
-import romanize from '../helpers/romanize'
-import convertTimeStampToDate from '../helpers/timeStampToDate'
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-        right: 0,
-        bottom: 5,
-        // transform: 'translateY(-50%)',
-        border: `2px solid ${theme.palette.background.paper}`,
-        padding: '0 2px',
-    },
-}))
+import { converTimeStampToFormatedDate } from '../helpers/timeStampToDate'
+import useAdd from '../hooks/useAdd'
+import useBoolean from '../hooks/useBoolean'
 
 export default function DetailPage() {
     const { id } = useParams()
-    const { userData } = useGlobalContext()
+    const { userData, saveExcercise, loadingSaveExcercise } = useGlobalContext()
 
-    if (!userData) {
-        return 'loading...'
+    const [series, useAddSerieFN, useAddRepFN, useAddWeightFN, handleSetUpSeries] = useAdd()
+    const [handleAddSerie, handleRemoveSerie] = useAddSerieFN.useAddSerie
+    const [handleAddRep, handleRemoveRep] = useAddRepFN.useAddRep
+    const [handleChangeWeight, handleChangeAddingFactor] = useAddWeightFN.useAddWeight
+
+    const [isShowAddNew, hideAddNew, showAddNew] = useBoolean(false)
+    const [isShowEdit, hideEdit, showEdit] = useBoolean(false)
+
+    const handleAddNew = async () => {
+        const data = { ...userData.list[id] }
+
+        data.history.push({
+            series: data.series,
+            date: data.createdAt,
+        })
+        delete data.createdAt
+        data.history = data.history.map((h, idx) => ({ ...h, orderNum: idx }))
+        data.series = series.map(s => ({ reps: s.reps, weight: s.weight, id: s.id }))
+
+        await saveExcercise(data, id)
+
+        hideAddNew()
     }
+
+    const handleEdit = async () => {
+        let newData = { ...userData }
+        newData.list[id].series = series.map(serie => ({ weight: serie.weight, id: serie.id, reps: serie.reps }))
+        const data = newData.list[id]
+        delete data.createdAt
+
+        await saveExcercise(data, id)
+
+        hideEdit()
+    }
+
+    const handleShowEdit = () => {
+        // eslint-disable-next-line no-undef
+        console.log('userData.list[id].series => ', userData.list[id].series)
+        handleSetUpSeries(userData.list[id].series.map(serie => ({ ...serie, addingFactor: 1 })))
+        showEdit()
+    }
+
+    const handleCleanEdit = () => {
+        handleSetUpSeries([{ reps: 0, weight: '', addingFactor: 1, id: 0 }])
+        hideEdit()
+    }
+
+    // useEffect(() => {
+    //     if (!userData) return
+    //     // eslint-disable-next-line no-undef
+    //     console.log('userData => ', userData)
+    // }, [userData])
 
     return (
         userData && (
-            <Paper component={Stack} gap={2} sx={{ py: 2, px: 3 }}>
-                <Typography variant='h4'>{userData.list[id].name}</Typography>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: `1fr ${userData.list[id].series.map(() => 'auto').join(' ')}`,
-                        columnGap: 1,
-                        rowGap: 1.5,
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography>Series: </Typography>
-                    {userData.list[id].series.map(serie => (
-                        <Chip key={serie.id} label={romanize(serie.id + 1)} />
-                    ))}
-                    <Divider /* orientation='vertical' */ sx={{ gridColumn: '1 / -1' }} />
-                    <Typography>Reps: </Typography>
-                    {userData.list[id].series.map(serie => (
-                        <Chip key={serie.id} label={serie.reps} />
-                    ))}
-                    <Divider /* orientation='vertical' */ sx={{ gridColumn: '1 / -1' }} />
-                    <Typography>Peso: </Typography>
-                    {userData.list[id].series.map(serie => (
-                        <StyledBadge
-                            key={serie.id}
-                            badgeContent='kg'
-                            color='primary'
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                        >
-                            <Chip label={serie.weight} />
-                        </StyledBadge>
-                    ))}
-                    <Divider /* orientation='vertical' */ sx={{ gridColumn: '1 / -1' }} />
-                </Box>
-                <Stack direction='row' alignItems='center' justifyContent='space-between'>
-                    <Typography>Fecha: </Typography>
-                    <Typography>{format(convertTimeStampToDate(userData.list[id].createdAt), 'dd/MM/yyyy')}</Typography>
-                </Stack>
-                <Stack direction='row' gap={1}>
-                    <Button variant='contained' color='secondary'>
-                        Cargar nuevo
-                    </Button>
-                    <Button variant='contained'>Editar</Button>
-                    <Button variant='outlined' color='warning'>
-                        Eliminar
-                    </Button>
-                </Stack>
-            </Paper>
+            <Stack gap={2}>
+                <Paper elevation={isShowAddNew || isShowEdit ? 0 : 2}>
+                    <Stack sx={{ py: 2, px: 3 }} gap={3}>
+                        <Typography variant='h4'>{userData.list[id].name}</Typography>
+                        <DetailsGrid userData={userData} id={id} />
+                    </Stack>
+
+                    <Stack direction='row' alignItems='center' justifyContent='space-between' sx={{ py: 2, px: 3 }} gap={2}>
+                        <Typography>Fecha: </Typography>
+                        <Typography>
+                            {!loadingSaveExcercise && converTimeStampToFormatedDate(userData.list[id].createdAt)}
+                        </Typography>
+                    </Stack>
+
+                    <Divider flexItem />
+                    <DetailsActions
+                        handleAddToHistory={showAddNew}
+                        isShowAddNew={isShowAddNew}
+                        handleShowEdit={handleShowEdit}
+                        isShowEdit={isShowEdit}
+                    />
+                </Paper>
+                {(isShowAddNew || isShowEdit) && (
+                    <Paper>
+                        <Stack sx={{ py: 2, px: 3 }} gap={3}>
+                            <Typography variant='h4'>{userData.list[id].name}</Typography>
+                            <Series series={series} handleRemoveSerie={handleRemoveSerie} handleAddSerie={handleAddSerie} />
+                            {series.map(el => (
+                                <RepsAndWeight
+                                    key={el.id}
+                                    serie={el}
+                                    handleAddRep={handleAddRep}
+                                    handleRemoveRep={handleRemoveRep}
+                                    handleChangeWeight={handleChangeWeight}
+                                    handleChangeAddingFactor={handleChangeAddingFactor}
+                                />
+                            ))}
+                            <Stack direction='row' alignItems='center' alignSelf='flex-end' gap={2}>
+                                <LoadingButton
+                                    disabled={loadingSaveExcercise}
+                                    loading={loadingSaveExcercise}
+                                    variant='contained'
+                                    onClick={() => (isShowAddNew ? handleAddNew() : handleEdit())}
+                                >
+                                    Guardar
+                                </LoadingButton>
+                                <Button
+                                    variant='outlined'
+                                    color='warning'
+                                    onClick={() => (isShowAddNew ? hideAddNew() : handleCleanEdit())}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Stack>
+                        </Stack>
+                    </Paper>
+                )}
+            </Stack>
         )
     )
 }

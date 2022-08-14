@@ -7,9 +7,10 @@ import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Profile from '../pages/Profile'
 import Add from '../pages/Add'
-import List from '../pages/List'
+import List from '../components/List'
 import DetailPage from '../pages/DetailPage'
 import Layout from '../components/Layout'
+import History from '../pages/History'
 
 export default function App() {
     const { isLight } = useGlobalContext()
@@ -35,15 +36,15 @@ export default function App() {
                                 </PrivateRoute>
                             }
                         />
-                        <Route path='/lista'>
-                            <Route
+                        <Route path='/detalle'>
+                            {/* <Route
                                 index
                                 element={
                                     <PrivateRoute>
                                         <List />
                                     </PrivateRoute>
                                 }
-                            />
+                            /> */}
                             <Route
                                 path=':id'
                                 element={
@@ -53,6 +54,14 @@ export default function App() {
                                 }
                             />
                         </Route>
+                        <Route
+                            path='/historico'
+                            element={
+                                <PrivateRoute>
+                                    <History />
+                                </PrivateRoute>
+                            }
+                        />
                         <Route
                             path='/perfil'
                             element={

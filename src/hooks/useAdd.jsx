@@ -41,6 +41,9 @@ export default function useAdd() {
         isChanging.addingFactor = newAddingFactor
         setSeries(newSeries)
     }
+    const handleSetUpSeries = newSeries => {
+        setSeries(newSeries)
+    }
 
     return [
         series,
@@ -53,5 +56,7 @@ export default function useAdd() {
         {
             useAddWeight: [handleChangeWeight, handleChangeAddingFactor],
         },
+
+        handleSetUpSeries,
     ]
 }

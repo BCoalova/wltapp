@@ -5,10 +5,11 @@ const themeLight = createTheme({
     palette: {
         mode: 'light',
         background: {
-            paper: 'hsl(29, 70%, 96%)',
+            paper: 'hsl(251, 70%, 96%)',
         },
         primary: {
             main: 'hsl(251, 33%, 67%)',
+            contrastText: 'hsl(251, 70%, 96%)',
         },
         secondary: {
             main: 'hsl(165, 100%, 63%)',
@@ -16,7 +17,7 @@ const themeLight = createTheme({
         text: {
             basic: 'hsl(0, 0%, 20%)',
         },
-        divider: 'hsl(220, 11%, 16%)',
+        divider: 'hsl(251, 11%, 16%)',
     },
     chartOpt: {
         options: {
@@ -56,12 +57,12 @@ const themeDark = createTheme({
             main: grey[200],
         },
         background: {
-            paper: 'hsl(216, 20%, 12%)',
+            paper: 'hsl(251, 20%, 12%)',
         },
         text: {
             basic: 'hsl(0, 0%, 90%)',
         },
-        divider: 'hsl(216, 13%, 62%)',
+        divider: 'hsl(251, 13%, 62%)',
     },
     chartOpt: {
         options: {

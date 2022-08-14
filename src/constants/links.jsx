@@ -1,12 +1,12 @@
+import HistoryIcon from '@mui/icons-material/History'
 import HomeIcon from '@mui/icons-material/Home'
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
-import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 import { Box } from '@mui/material'
 
 export const links = [
     { label: 'Inicio', Icon: () => <HomeIcon />, path: '/' },
     { label: 'Agregar', Icon: () => <PlaylistAddIcon />, path: '/agregar' },
-    { label: 'Lista', Icon: () => <PlaylistPlayIcon />, path: '/lista' },
+    { label: 'Histórico', Icon: () => <HistoryIcon />, path: '/historico' },
     {
         label: 'Perfil',
         Icon: currentUser => (
