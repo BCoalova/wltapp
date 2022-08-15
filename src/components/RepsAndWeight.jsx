@@ -33,7 +33,7 @@ export default function RepsAndWeight({ serie, handleRemoveRep, handleAddRep, ha
                     <Stack direction='row' gap={1} alignItems='center'>
                         {[
                             { value: '1x', id: 0, addingFactor: 1 },
-                            { value: '5x', id: 1, addingFactor: 5 },
+                            { value: '3x', id: 1, addingFactor: 3 },
                             { value: '10x', id: 2, addingFactor: 10 },
                         ].map(el => (
                             <Chip
