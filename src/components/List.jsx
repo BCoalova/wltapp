@@ -1,5 +1,15 @@
 import SearchIcon from '@mui/icons-material/Search'
-import { IconButton, InputBase, List as MUIList, ListItem, ListItemButton, ListItemText, Paper, styled } from '@mui/material'
+import {
+    IconButton,
+    InputBase,
+    List as MUIList,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Paper,
+    styled,
+    Typography,
+} from '@mui/material'
 import { Stack } from '@mui/system'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -55,6 +65,11 @@ export default function List() {
                                 </ListItemButton>
                             </ListItem>
                         ))}
+                    {!results.length && (
+                        <Typography variant='caption' color='divider'>
+                            No se encontraron resultados...
+                        </Typography>
+                    )}
                 </MUIList>
             </CoolScrollBarPaper>
         )

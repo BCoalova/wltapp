@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import useDarkMode from '../hooks/useDarkMode'
 
-import { doc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteField, doc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import initializeUser from '../helpers/initializeUser'
 import useCurrentUser from '../hooks/useCurrentUser'
+import useBoolean from '../hooks/useBoolean'
 
 const GlobalContext = createContext()
 
@@ -19,6 +20,7 @@ export default function GlobalProvider({ children }) {
 
     const [currentUser, loadingUser, login, logOut] = useCurrentUser()
     const [userData, setUserData] = useState(null)
+    const [isLoadingUserData, finishLoadingUserData /* , startLoadingUserData */] = useBoolean(true)
     const [, /* saveExcerciseErr */ setSaveExcerciseErr] = useState('')
     const [loadingSaveExcercise, setLoadingSaveExcercise] = useState(false)
 
@@ -51,10 +53,12 @@ export default function GlobalProvider({ children }) {
                 // eslint-disable-next-line no-undef
                 console.log('no existe')
             }
+
+            finishLoadingUserData()
         })
 
         return () => unsub()
-    }, [currentUser])
+    }, [currentUser, finishLoadingUserData])
 
     const saveExcercise = async (data, excerciseCode) => {
         setLoadingSaveExcercise(true)
@@ -74,6 +78,26 @@ export default function GlobalProvider({ children }) {
         // setLoadingSaveExcercise(false)
     }
 
+    const [isLoadingDelete, stopLoadingDelete, startLoadingDelete /* , toggleLoadingDelete, resetLoadingDelete  */] = useBoolean()
+    const [deleteError, setDeleteError] = useState('')
+
+    const deleteExcercise = async id => {
+        startLoadingDelete()
+
+        let document = doc(db, 'users', currentUser.uid)
+        let listDotExcercise = `list.${id}`
+
+        try {
+            await updateDoc(document, {
+                [listDotExcercise]: deleteField(),
+            })
+        } catch (err) {
+            setDeleteError(err)
+        } finally {
+            stopLoadingDelete()
+        }
+    }
+
     const value = {
         isLight,
         login,
@@ -82,8 +106,13 @@ export default function GlobalProvider({ children }) {
         currentUser,
 
         userData,
+        isLoadingUserData,
         saveExcercise,
         loadingSaveExcercise,
+
+        deleteExcercise,
+        isLoadingDelete,
+        deleteError,
     }
     return <Provider value={value}>{children}</Provider>
 }

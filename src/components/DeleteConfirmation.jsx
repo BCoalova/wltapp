@@ -13,15 +13,18 @@ import { useEffect, useRef } from 'react'
 import * as React from 'react'
 import useInput from '../hooks/useInput'
 import useBoolean from '../hooks/useBoolean'
+import { LoadingButton } from '@mui/lab'
+import { useNavigate } from 'react-router-dom'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='down' ref={ref} {...props} />
 })
 
-export default function DeleteConfirmation({ isPromptDelete, hidePromptDelete, id, handleDelete }) {
+export default function DeleteConfirmation({ isPromptDelete, hidePromptDelete, id, deleteExcercise, isLoadingDelete }) {
     const textFieldRef = useRef()
     const [value, bind /* , handleReset, handleUpdate, checkIfEmpty */] = useInput('')
     const [isCorrect, incorrect, correct] = useBoolean(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!isPromptDelete) return
@@ -31,15 +34,15 @@ export default function DeleteConfirmation({ isPromptDelete, hidePromptDelete, i
         }, 300)
     }, [isPromptDelete])
 
-    const checkEquality = (value, id) => {
+    const checkEquality = async (value, id) => {
         const noSpacesValue = value.replaceAll(' ', '').toUpperCase()
         const isEqual = noSpacesValue === id
 
         if (!isEqual) return incorrect()
 
         correct()
-        hidePromptDelete()
-        handleDelete(id)
+        await deleteExcercise(id)
+        navigate('/')
     }
 
     return (
@@ -65,10 +68,15 @@ export default function DeleteConfirmation({ isPromptDelete, hidePromptDelete, i
             </DialogContent>
             <DialogActions>
                 <Stack px={2} direction='row' alignItems='center' gap={1}>
-                    <Button onClick={() => checkEquality(value, id)} variant='contained'>
+                    <LoadingButton
+                        loading={isLoadingDelete}
+                        disabled={isLoadingDelete}
+                        onClick={() => checkEquality(value, id)}
+                        variant='contained'
+                    >
                         Confirmar
-                    </Button>
-                    <Button onClick={hidePromptDelete} color='warning' variant='outlined'>
+                    </LoadingButton>
+                    <Button onClick={hidePromptDelete} disabled={isLoadingDelete} color='warning' variant='outlined'>
                         Cancelar
                     </Button>
                 </Stack>

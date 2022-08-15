@@ -2,7 +2,7 @@ import { Alert, Button, Stack } from '@mui/material'
 
 export default function DetailsActions({ handleAddToHistory, isShowAddNew, handleShowEdit, isShowEdit, handlePromptDelete }) {
     return (
-        <Stack direction='row' alignItems='center' justifyContent='flex-end' gap={2} sx={{ py: 2, px: 3 }}>
+        <Stack direction='row' alignItems='center' justifyContent='flex-end' gap={2} flexWrap='wrap' sx={{ py: 2, px: 3 }}>
             {(isShowAddNew || isShowEdit) && (
                 <Alert severity={isShowEdit ? 'warning' : 'info'} sx={{ flexGrow: 1, pb: 0, pt: 0 }}>
                     {isShowAddNew && 'Está información se guardará en el historial.'}
