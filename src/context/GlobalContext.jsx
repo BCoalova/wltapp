@@ -51,7 +51,7 @@ export default function GlobalProvider({ children }) {
                     }
                 })()
                 // eslint-disable-next-line no-undef
-                console.log('no existe')
+                // console.log('no existe')
             }
 
             finishLoadingUserData()

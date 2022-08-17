@@ -31,7 +31,7 @@ const CoolScrollBarPaper = styled(Paper)(({ theme }) => {
     }
 })
 
-export default function List() {
+export default function List({ handleSelect }) {
     const { userData } = useGlobalContext()
     const [excerciseList, setExcerciseListList] = useState([])
 
@@ -60,7 +60,11 @@ export default function List() {
                     {!!results.length &&
                         results.map(exc => (
                             <ListItem key={exc.id} disablePadding>
-                                <ListItemButton component={Link} to={`/detalle/${exc.code}`}>
+                                {
+                                    // eslint-disable-next-line no-undef
+                                    // console.log('exc => ', exc)
+                                }
+                                <ListItemButton onClick={() => handleSelect(exc.code)}>
                                     <ListItemText primary={exc.name} />
                                 </ListItemButton>
                             </ListItem>

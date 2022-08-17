@@ -28,8 +28,6 @@ export default function Add() {
 
         const isInDB = userData.list[excerciseCode]?.code === excerciseCode
         if (isInDB) {
-            // eslint-disable-next-line no-undef
-            console.log('isInDB => ', isInDB)
             return setIsInDBErr({ label: `El ejercicio ${excercise} ya está registrado.`, code: excerciseCode })
         }
 

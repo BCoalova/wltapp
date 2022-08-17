@@ -4,8 +4,10 @@ import DeleteConfirmation from '../components/DeleteConfirmation'
 import DetailsActions from '../components/DetailsActions'
 import DetailsGrid from '../components/DetailsGrid'
 import EditOrAddExcercise from '../components/EditOrAddExcercise'
+import HistoryList from '../components/HistoryList'
 import LoadingBackDrop from '../components/LoadingBackDrop'
 import { useGlobalContext } from '../context/GlobalContext'
+import setUpHistoryArr from '../helpers/setUpHistoryArr'
 import { converTimeStampToFormatedDate } from '../helpers/timeStampToDate'
 import useAdd from '../hooks/useAdd'
 import useBoolean from '../hooks/useBoolean'
@@ -63,8 +65,6 @@ export default function DetailPage() {
     }
 
     const handleShowEdit = () => {
-        // eslint-disable-next-line no-undef
-        console.log('userData.list[id].series => ', userData.list[id].series)
         handleSetUpSeries(userData.list[id].series.map(serie => ({ ...serie, addingFactor: 1 })))
         showEdit()
     }
@@ -86,7 +86,7 @@ export default function DetailPage() {
                     <Paper elevation={isShowAddNew || isShowEdit ? 0 : 2}>
                         <Stack sx={{ py: 2, px: 3 }} gap={3}>
                             <Typography variant='h4'>{userData.list[id].name}</Typography>
-                            <DetailsGrid userData={userData} id={id} />
+                            <DetailsGrid series={userData.list[id].series} />
                         </Stack>
 
                         <Stack direction='row' alignItems='center' justifyContent='space-between' sx={{ py: 2, px: 3 }} gap={2}>
@@ -134,6 +134,8 @@ export default function DetailPage() {
                             isLoadingDelete={isLoadingDelete}
                         />
                     )}
+
+                    <HistoryList list={setUpHistoryArr(userData.list[id])} />
                 </Stack>
             )}
         </>

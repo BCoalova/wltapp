@@ -10,29 +10,32 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }))
 
-export default function DetailsGrid({ userData, id }) {
+export default function DetailsGrid({ series }) {
+    // eslint-disable-next-line no-undef
+    // console.log('series => ', series)
+
     return (
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: `1fr ${userData.list[id].series.map(() => 'auto').join(' ')}`,
+                gridTemplateColumns: `1fr ${series.map(() => 'auto').join(' ')}`,
                 columnGap: 1,
                 rowGap: 1,
                 alignItems: 'center',
             }}
         >
             <Typography>Series: </Typography>
-            {userData.list[id].series.map(serie => (
+            {series.map(serie => (
                 <Chip key={serie.id} label={romanize(serie.id + 1)} color='secondary' />
             ))}
             <Divider /* orientation='vertical' */ sx={{ gridColumn: '1 / -1' }} />
             <Typography>Reps: </Typography>
-            {userData.list[id].series.map(serie => (
+            {series.map(serie => (
                 <Chip key={serie.id} label={serie.reps} variant='outlined' color='primary' />
             ))}
             <Divider /* orientation='vertical' */ sx={{ gridColumn: '1 / -1' }} />
             <Typography>Peso: </Typography>
-            {userData.list[id].series.map(serie => (
+            {series.map(serie => (
                 <StyledBadge
                     sx={{ '& .MuiBadge-badge': { right: serie.weight && serie.weight > 9 ? 0 : 8 } }}
                     key={serie.id}
