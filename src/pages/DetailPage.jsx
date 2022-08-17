@@ -4,10 +4,8 @@ import DeleteConfirmation from '../components/DeleteConfirmation'
 import DetailsActions from '../components/DetailsActions'
 import DetailsGrid from '../components/DetailsGrid'
 import EditOrAddExcercise from '../components/EditOrAddExcercise'
-import HistoryList from '../components/HistoryList'
 import LoadingBackDrop from '../components/LoadingBackDrop'
 import { useGlobalContext } from '../context/GlobalContext'
-import setUpHistoryArr from '../helpers/setUpHistoryArr'
 import { converTimeStampToFormatedDate } from '../helpers/timeStampToDate'
 import useAdd from '../hooks/useAdd'
 import useBoolean from '../hooks/useBoolean'
@@ -135,7 +133,7 @@ export default function DetailPage() {
                         />
                     )}
 
-                    <HistoryList list={setUpHistoryArr(userData.list[id])} />
+                    {/* <HistoryList list={setUpHistoryArr(userData.list[id])} /> */}
                 </Stack>
             )}
         </>
